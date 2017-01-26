@@ -557,11 +557,12 @@ public class ClientState {
 	 */
 	public void persistBufferedMessage(MqttWireMessage message) {
 		final String methodName = "persistBufferedMessage";
-		String key = getSendBufferedPersistenceKey(message);
+		String key = null;
 		
 		// Because the client will have disconnected, we will want to re-open persistence
 		try {
 			message.setMessageId(getNextMessageId());
+			key = getSendBufferedPersistenceKey(message);
 			try {
 				persistence.put(key, (MqttPublish) message);
 			} catch (MqttPersistenceException mpe){
